@@ -4,4 +4,6 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="add_approach">Add approach</string>
+    <string name="hello">Hello</string>
+    <string name="logo">Logo</string>
 </resources>

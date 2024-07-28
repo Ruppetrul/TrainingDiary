@@ -1,6 +1,7 @@
 package com.example.trainingdiary
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import com.example.trainingdiary.models.Exercise
 
@@ -8,4 +9,10 @@ import com.example.trainingdiary.models.Exercise
 interface ExerciseDao {
     @Query("SELECT * FROM exercise")
     fun getAll(): List<Exercise>
+
+    @Query("SELECT COUNT(*) FROM exercise")
+    fun getCount(): Int
+
+    @Insert
+    suspend fun insertAll(entities: List<Exercise>)
 }
