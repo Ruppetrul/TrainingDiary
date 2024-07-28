@@ -1,11 +1,12 @@
 package com.example.trainingdiary
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
 
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,10 +22,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun prepareApp() {
-        val database = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "your_database_name"
-        ).build()
+        val database = AppDatabase.getDatabase(applicationContext)
 
         val seeder = DatabaseSeeder(database)
         seeder.seed().let {

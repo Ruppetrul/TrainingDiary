@@ -15,4 +15,7 @@ interface ExerciseDao {
 
     @Insert
     suspend fun insertAll(entities: List<Exercise>)
+
+    @Query("SELECT * FROM exercise")
+    fun getAllRecords(): List<Exercise>
 }
