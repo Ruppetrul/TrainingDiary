@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.trainingdiary.R
 import com.example.trainingdiary.databinding.FragmentHomeBinding
@@ -35,8 +36,12 @@ class HomeFragment : Fragment() {
             textView.text = it
         }
 
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.navigation_home, false)
+            .build()
+
         binding.floatingActionButton.setOnClickListener {
-            findNavController().navigate(R.id.action_currentFragment_to_listFragment)
+            findNavController().navigate(R.id.action_currentFragment_to_listFragment, null, navOptions)
         }
 
         return root
