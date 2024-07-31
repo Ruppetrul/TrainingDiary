@@ -4,9 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 import com.example.trainingdiary.models.Exercise
+import com.example.trainingdiary.models.ExerciseHistory
+import java.util.Date
 
-@Database(entities = [Exercise::class], version = 1)
+@Database(entities = [Exercise::class, ExerciseHistory::class], version = 1)
+@TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao
 
@@ -25,5 +30,19 @@ abstract class AppDatabase : RoomDatabase() {
                 instance
             }
         }
+    }
+}
+
+object DateConverter {
+    @TypeConverter
+    @JvmStatic
+    fun toDate(timestamp: Long?): Date? {
+        return timestamp?.let { Date(it) }
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun fromDate(date: Date?): Long? {
+        return date?.time
     }
 }

@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.trainingdiary.R
 import com.example.trainingdiary.databinding.FragmentExerciseBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +20,6 @@ class ExerciseFragment : Fragment() {
     private var _binding: FragmentExerciseBinding? = null
     private val binding get() = _binding!!
     private lateinit var exerciseViewModel: ExerciseViewModel
-    private val adapter = ExerciseAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,6 +29,12 @@ class ExerciseFragment : Fragment() {
         _binding = FragmentExerciseBinding.inflate(inflater, container, false)
         val root = binding.root
 
+        val adapter = ExerciseAdapter { exerciseId ->
+            val bundle = Bundle()
+            bundle.putInt("exerciseId", exerciseId)
+
+            findNavController().navigate(R.id.action_fragment2_to_fragment1, bundle)
+        }
         binding.exercises.layoutManager = LinearLayoutManager(context)
         binding.exercises.adapter = adapter
 

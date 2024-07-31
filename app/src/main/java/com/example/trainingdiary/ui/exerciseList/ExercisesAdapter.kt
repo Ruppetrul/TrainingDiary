@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.trainingdiary.R
 import com.example.trainingdiary.models.Exercise
 
-class ExerciseAdapter : RecyclerView.Adapter<ExerciseAdapter.RecordViewHolder>() {
+class ExerciseAdapter(private val itemClickListener: (Int) -> Unit) : RecyclerView.Adapter<ExerciseAdapter.RecordViewHolder>() {
 
     private var records = emptyList<Exercise>()
 
@@ -30,6 +30,9 @@ class ExerciseAdapter : RecyclerView.Adapter<ExerciseAdapter.RecordViewHolder>()
     override fun onBindViewHolder(holder: RecordViewHolder, position: Int) {
         val current = records[position]
         holder.bind(current)
+        holder.itemView.setOnClickListener {
+            itemClickListener(current.id!!)
+        }
     }
 
     override fun getItemCount() = records.size

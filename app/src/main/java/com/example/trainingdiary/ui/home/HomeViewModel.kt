@@ -1,13 +1,24 @@
 package com.example.trainingdiary.ui.home
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.example.trainingdiary.AppDatabase
+import com.example.trainingdiary.ExerciseHistoryRepository
+import com.example.trainingdiary.models.ExerciseHistoryWithExercise
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+    private val exerciseHistoryRepository: ExerciseHistoryRepository
+
+    var allExerciseHistory: LiveData<List<ExerciseHistoryWithExercise>>
+
+    init {
+
+        val database = AppDatabase.getDatabase(application)
+        val exerciseHistoryDao = database.exerciseDao()
+
+        exerciseHistoryRepository = ExerciseHistoryRepository(exerciseHistoryDao)
+        allExerciseHistory = exerciseHistoryRepository.getTodayHistory()
     }
-    val text: LiveData<String> = _text
 }

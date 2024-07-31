@@ -1,9 +1,13 @@
 package com.example.trainingdiary
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import com.example.trainingdiary.models.Exercise
+import com.example.trainingdiary.models.ExerciseHistory
+import com.example.trainingdiary.models.ExerciseHistoryWithExercise
 
 @Dao
 interface ExerciseDao {
@@ -18,4 +22,11 @@ interface ExerciseDao {
 
     @Query("SELECT * FROM exercise")
     fun getAllRecords(): List<Exercise>
+
+    @Transaction
+    @Query("SELECT * FROM exercise_history")
+    fun getAllHistoryWithExercises(): LiveData<List<ExerciseHistoryWithExercise>>
+
+    @Insert
+    fun insertHistory(exerciseHistory: ExerciseHistory)
 }

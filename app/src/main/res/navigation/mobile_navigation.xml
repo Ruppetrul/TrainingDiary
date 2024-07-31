@@ -32,4 +32,11 @@
     <action
         android:id="@+id/action_currentFragment_to_listFragment"
         app:destination="@id/listFragment" />
+    <action
+        android:id="@+id/action_fragment2_to_fragment1"
+        app:destination="@id/navigation_home">
+        <argument
+            android:name="exerciseId"
+            app:argType="integer" />
+    </action>
 </navigation>
