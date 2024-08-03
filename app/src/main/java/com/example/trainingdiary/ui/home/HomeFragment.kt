@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 class HomeFragment : Fragment() {
 
@@ -70,20 +72,20 @@ class HomeFragment : Fragment() {
             viewPager.setCurrentItem(todayPosition, false)
         }
 
-        handleFloatButton(todayPosition, navOptions, viewPager)
+        handleFloatButtonAndTitle(todayPosition, navOptions, viewPager)
 
         return root
     }
 
-    private fun handleFloatButton(
+    private fun handleFloatButtonAndTitle(
         todayPosition: Int,
         navOptions: NavOptions,
         viewPager: ViewPager2
     ) {
-        var todayPosition1 = todayPosition
+        var currentPosition = todayPosition
         binding.floatingActionButton.setOnClickListener {
             val bundle = Bundle()
-            bundle.putInt("positionId", todayPosition1)
+            bundle.putInt("positionId", todayPosition)
             findNavController().navigate(
                 R.id.action_currentFragment_to_listFragment,
                 bundle,
@@ -94,9 +96,11 @@ class HomeFragment : Fragment() {
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                todayPosition1 = position
+                currentPosition = position
+                handleTitle(todayPosition, position)
             }
         })
+        handleTitle(todayPosition, currentPosition)
     }
 
     private fun calculateShift(todayPosition: Int, position: Int): Calendar {
@@ -109,6 +113,15 @@ class HomeFragment : Fragment() {
 
         calendar.add(Calendar.DAY_OF_YEAR, dayOffset)
         return calendar
+    }
+
+    private fun handleTitle(todayPosition: Int, position: Int) {
+        val calendar = calculateShift(todayPosition, position)
+        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val monthName = calendar. getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = "$dayOfMonth $monthName"
     }
 
     override fun onDestroyView() {
