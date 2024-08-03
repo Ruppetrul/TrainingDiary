@@ -85,7 +85,7 @@ class HomeFragment : Fragment() {
         var currentPosition = todayPosition
         binding.floatingActionButton.setOnClickListener {
             val bundle = Bundle()
-            bundle.putInt("positionId", todayPosition)
+            bundle.putInt("positionId", currentPosition)
             findNavController().navigate(
                 R.id.action_currentFragment_to_listFragment,
                 bundle,
