@@ -32,6 +32,7 @@ class ExerciseFragment : Fragment() {
         val adapter = ExerciseAdapter { exerciseId ->
             val bundle = Bundle()
             bundle.putInt("exerciseId", exerciseId)
+            bundle.putInt("positionId", arguments?.getInt("positionId")!!)
 
             findNavController().navigate(R.id.action_fragment2_to_fragment1, bundle)
         }
