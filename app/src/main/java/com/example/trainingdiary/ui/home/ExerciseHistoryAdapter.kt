@@ -1,6 +1,8 @@
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -8,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.trainingdiary.R
 import com.example.trainingdiary.models.ExerciseHistoryWithExercise
 
-class ExerciseHistoryAdapter : ListAdapter<ExerciseHistoryWithExercise, ExerciseHistoryAdapter.ExerciseHistoryViewHolder>(ExerciseHistoryDiffCallback()) {
+class ExerciseHistoryAdapter(private val exerciseDeleteListener: (Int) -> Unit)
+    : ListAdapter<ExerciseHistoryWithExercise,
+        ExerciseHistoryAdapter.ExerciseHistoryViewHolder>(ExerciseHistoryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseHistoryViewHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -19,6 +23,10 @@ class ExerciseHistoryAdapter : ListAdapter<ExerciseHistoryWithExercise, Exercise
     override fun onBindViewHolder(holder: ExerciseHistoryViewHolder, position: Int) {
         val currentItem = getItem(position)
         holder.bind(currentItem)
+
+        holder.itemView.findViewById<ImageView>(R.id.remove_exercise_from_history).setOnClickListener {
+            exerciseDeleteListener(currentItem.exerciseHistory.id)
+        }
     }
 
     class ExerciseHistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

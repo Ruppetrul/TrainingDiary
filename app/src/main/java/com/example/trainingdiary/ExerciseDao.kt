@@ -29,4 +29,7 @@ interface ExerciseDao {
 
     @Insert
     fun insertHistory(exerciseHistory: ExerciseHistory)
+
+    @Query("DELETE FROM exercise_history WHERE id = :id")
+    fun deleteHistoryById(id: Int)
 }

@@ -48,8 +48,8 @@ class HomeFragment : Fragment() {
 
         val itemId = arguments?.getInt("exerciseId")
 
+        val database = AppDatabase.getDatabase(requireContext())
         if (itemId != null && itemId != 0) {
-            val database = AppDatabase.getDatabase(requireContext())
             CoroutineScope(Dispatchers.IO).launch {
                 database.exerciseDao().insertHistory(ExerciseHistory(0, itemId, Date())).let {
                     arguments?.clear()
@@ -57,7 +57,11 @@ class HomeFragment : Fragment() {
             }
         }
 
-        val exerciseHistoryAdapter = ExerciseHistoryAdapter()
+        val exerciseHistoryAdapter = ExerciseHistoryAdapter  { exerciseHistory ->
+            CoroutineScope(Dispatchers.IO).launch {
+                database.exerciseDao().deleteHistoryById(exerciseHistory)
+            }
+        }
 
         binding.exercisesHistory.apply {
             adapter = exerciseHistoryAdapter
