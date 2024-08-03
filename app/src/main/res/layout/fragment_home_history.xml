@@ -6,21 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/exercises_history"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+    <TextView
+        android:id="@+id/empty_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:contentDescription="@string/add_approach"
-        android:focusable="true"
-        android:layout_margin="16dp"
-        app:srcCompat="@android:drawable/ic_input_add"
+        app:drawableTopCompat="@drawable/baseline_calendar_today_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
+        android:gravity="center"
+        android:text="@string/start_training"
+        android:padding="16dp"
+        android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

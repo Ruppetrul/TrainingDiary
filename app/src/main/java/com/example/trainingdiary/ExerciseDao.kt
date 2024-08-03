@@ -8,6 +8,7 @@ import androidx.room.Transaction
 import com.example.trainingdiary.models.Exercise
 import com.example.trainingdiary.models.ExerciseHistory
 import com.example.trainingdiary.models.ExerciseHistoryWithExercise
+import java.util.Date
 
 @Dao
 interface ExerciseDao {
@@ -32,4 +33,7 @@ interface ExerciseDao {
 
     @Query("DELETE FROM exercise_history WHERE id = :id")
     fun deleteHistoryById(id: Int)
+
+    @Query("SELECT * FROM exercise_history WHERE datetime >= :startOfDay AND datetime < :endOfDay")
+    fun getExerciseHistoryByDate(startOfDay: Date, endOfDay: Date): LiveData<List<ExerciseHistoryWithExercise>>
 }

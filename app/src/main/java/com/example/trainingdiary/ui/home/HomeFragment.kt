@@ -1,6 +1,5 @@
 package com.example.trainingdiary.ui.home
 
-import ExerciseHistoryAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.example.trainingdiary.AppDatabase
 import com.example.trainingdiary.R
 import com.example.trainingdiary.databinding.FragmentHomeBinding
@@ -17,6 +16,7 @@ import com.example.trainingdiary.models.ExerciseHistory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.util.Date
 
 class HomeFragment : Fragment() {
@@ -57,20 +57,12 @@ class HomeFragment : Fragment() {
             }
         }
 
-        val exerciseHistoryAdapter = ExerciseHistoryAdapter  { exerciseHistory ->
-            CoroutineScope(Dispatchers.IO).launch {
-                database.exerciseDao().deleteHistoryById(exerciseHistory)
-            }
-        }
+        val viewPager: ViewPager2 = binding.viewPager
+        val adapter = MyFragmentStateAdapter(requireActivity())
+        viewPager.adapter = adapter
 
-        binding.exercisesHistory.apply {
-            adapter = exerciseHistoryAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-        }
-
-        homeViewModel.allExerciseHistory.observe(viewLifecycleOwner) { exerciseHistory ->
-            exerciseHistoryAdapter.submitList(exerciseHistory)
-        }
+        val todayPosition = adapter.getPositionForDate(LocalDate.now())
+        viewPager.setCurrentItem(todayPosition, false)
 
         return root
     }

@@ -11,14 +11,15 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val exerciseHistoryRepository: ExerciseHistoryRepository
 
-    var allExerciseHistory: LiveData<List<ExerciseHistoryWithExercise>>
-
     init {
 
         val database = AppDatabase.getDatabase(application)
         val exerciseHistoryDao = database.exerciseDao()
 
         exerciseHistoryRepository = ExerciseHistoryRepository(exerciseHistoryDao)
-        allExerciseHistory = exerciseHistoryRepository.getTodayHistory()
+    }
+
+    fun getByTimestamp(timestamp: Int): LiveData<List<ExerciseHistoryWithExercise>> {
+        return exerciseHistoryRepository.getHistoryForPosition(timestamp)
     }
 }
