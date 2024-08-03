@@ -117,11 +117,15 @@ class HomeFragment : Fragment() {
 
     private fun handleTitle(todayPosition: Int, position: Int) {
         val calendar = calculateShift(todayPosition, position)
+        val dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())
         val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+        val monthName = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
 
-        val monthName = calendar. getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+        val formattedDayOfWeek = dayOfWeek?.substring(0, 1)!!.uppercase() + dayOfWeek.substring(1)
 
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = "$dayOfMonth $monthName"
+        val title = "$formattedDayOfWeek, $dayOfMonth $monthName"
+
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = title
     }
 
     override fun onDestroyView() {
