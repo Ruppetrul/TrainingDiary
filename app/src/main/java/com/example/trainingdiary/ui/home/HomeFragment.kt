@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -49,10 +48,12 @@ class HomeFragment : Fragment() {
 
         val itemId = arguments?.getInt("exerciseId")
 
-        if (itemId != null) {
+        if (itemId != null && itemId != 0) {
             val database = AppDatabase.getDatabase(requireContext())
             CoroutineScope(Dispatchers.IO).launch {
-                database.exerciseDao().insertHistory(ExerciseHistory(0, itemId, Date()))
+                database.exerciseDao().insertHistory(ExerciseHistory(0, itemId, Date())).let {
+                    arguments?.clear()
+                }
             }
         }
 
