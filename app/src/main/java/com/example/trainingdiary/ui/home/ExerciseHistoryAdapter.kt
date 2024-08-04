@@ -31,7 +31,7 @@ class ExerciseHistoryAdapter(
             exerciseDeleteListener(currentItem.exerciseHistory.id)
         }
 
-        holder.itemView.findViewById<ImageView>(R.id.add_approach_to_history).setOnClickListener {
+        holder.itemView.setOnClickListener {
             approachAddListener(currentItem.exerciseHistory.id, null, null, null)
         }
 
