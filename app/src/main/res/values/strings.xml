@@ -8,4 +8,6 @@
     <string name="logo">Logo</string>
     <string name="empty_exercises">Empty exercises</string>
     <string name="start_training">Start training!</string>
+    <string name="run">Run</string>
+    <string name="remove_exercise_from_history">Remove exrcise from history</string>
 </resources>
