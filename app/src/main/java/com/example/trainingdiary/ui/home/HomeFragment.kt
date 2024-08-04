@@ -45,47 +45,52 @@ class HomeFragment : Fragment() {
             .setPopUpTo(R.id.navigation_home, false)
             .build()
 
-        val itemId = arguments?.getInt("exerciseId")
-        val position = arguments?.getInt("positionId", 0)
+        val exerciseId = arguments?.getInt("exerciseId") ?: 0
+        var position = arguments?.getInt("positionId") ?: 0
 
         val viewPager: ViewPager2 = binding.viewPager
         val adapter = MyFragmentStateAdapter(requireActivity())
         viewPager.adapter = adapter
+
         val todayPosition = adapter.getPositionForDate(LocalDate.now())
 
-        val database = AppDatabase.getDatabase(requireContext())
-        if (itemId != null && itemId != 0 && position != null && position != 0) {
-            CoroutineScope(Dispatchers.IO).launch {
-                val calendar = calculateShift(todayPosition, position)
+        val dayOffset = calculateShift(-(todayPosition - position))
+        handleNewExercise(exerciseId, dayOffset.time)
 
+        position = if (position != 0) position else todayPosition
+        viewPager.setCurrentItem(position,false)
+
+        handleFloatButtonAndTitle(todayPosition, position, navOptions, viewPager)
+
+        return root
+    }
+
+    private fun handleNewExercise(
+        exerciseId: Int,
+        time: Date
+    ) {
+        if (exerciseId != 0) {
+            val database = AppDatabase.getDatabase(requireContext())
+            CoroutineScope(Dispatchers.IO).launch {
                 database.exerciseDao().insertHistory(
-                    ExerciseHistory(0, itemId, calendar.time)
+                    ExerciseHistory(0, exerciseId, time)
                 ).let {
                     arguments?.putInt("exerciseId", 0)
                 }
             }
         }
-
-        if (position != 0 && position != null) {
-            viewPager.setCurrentItem(position, false)
-        } else {
-            viewPager.setCurrentItem(todayPosition, false)
-        }
-
-        handleFloatButtonAndTitle(todayPosition, navOptions, viewPager)
-
-        return root
     }
 
     private fun handleFloatButtonAndTitle(
         todayPosition: Int,
+        currentPosition: Int,
         navOptions: NavOptions,
         viewPager: ViewPager2
     ) {
-        var currentPosition = todayPosition
+        var currentPosition2 = currentPosition
         binding.floatingActionButton.setOnClickListener {
             val bundle = Bundle()
-            bundle.putInt("positionId", currentPosition)
+            bundle.putInt("positionId", currentPosition2)
             findNavController().navigate(
                 R.id.action_currentFragment_to_listFragment,
                 bundle,
@@ -96,16 +101,14 @@ class HomeFragment : Fragment() {
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                currentPosition = position
+                currentPosition2 = position
                 handleTitle(todayPosition, position)
             }
         })
-        handleTitle(todayPosition, currentPosition)
+        handleTitle(todayPosition, currentPosition2)
     }
 
-    private fun calculateShift(todayPosition: Int, position: Int): Calendar {
-        val dayOffset = -(todayPosition - position)
-
+    private fun calculateShift(dayOffset: Int): Calendar {
         val currentDate = Date()
 
         val calendar = Calendar.getInstance()
@@ -116,7 +119,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun handleTitle(todayPosition: Int, position: Int) {
-        val calendar = calculateShift(todayPosition, position)
+        val calendar = calculateShift(-(todayPosition - position))
         val dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())
         val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
         val monthName = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
