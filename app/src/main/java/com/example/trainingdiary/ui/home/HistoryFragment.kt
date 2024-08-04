@@ -129,6 +129,13 @@ class HistoryFragment : Fragment() {
             dialog.dismiss()
         }
 
+        if (approachId != null) {
+            builder.setNeutralButton("Delete") { dialog, which ->
+                onDelete(approachId)
+                dialog.dismiss()
+            }
+        }
+
         val dialog = builder.create()
         dialog.show()
 
@@ -136,6 +143,13 @@ class HistoryFragment : Fragment() {
         setButtonClickListener(incrementButton1, weightView, true)
         setButtonClickListener(decrementButton2, repeatView, false)
         setButtonClickListener(incrementButton2, repeatView, true)
+    }
+
+    private fun onDelete(approachId: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val database = AppDatabase.getDatabase(requireContext())
+            database.exerciseDao().deleteApproachById(approachId)
+        }
     }
 
     private fun setButtonClickListener(button: Button, inputField: EditText, increment: Boolean) {

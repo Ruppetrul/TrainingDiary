@@ -44,4 +44,7 @@ interface ExerciseDao {
 
     @Update
     fun updateApproach(approach: Approach)
+
+    @Query("DELETE FROM Approach WHERE id = :id")
+    fun deleteApproachById(id: Int)
 }
