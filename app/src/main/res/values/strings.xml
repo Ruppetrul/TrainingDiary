@@ -10,4 +10,5 @@
     <string name="start_training">Start training!</string>
     <string name="run">Run</string>
     <string name="remove_exercise_from_history">Remove exrcise from history</string>
+    <string name="add_exercise_to_history">Add exercise to history</string>
 </resources>

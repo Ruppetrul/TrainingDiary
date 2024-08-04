@@ -15,6 +15,16 @@
         android:textSize="18sp" />
 
     <ImageView
+        android:id="@+id/add_exercise_to_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/add_exercise_to_history"
+        app:layout_constraintEnd_toStartOf="@id/remove_exercise_from_history"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/baseline_add_24" />
+
+    <ImageView
         android:id="@+id/remove_exercise_from_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.trainingdiary.R
 import com.example.trainingdiary.models.ExerciseHistoryWithExercise
 
-class ExerciseHistoryAdapter(private val exerciseDeleteListener: (Int) -> Unit)
+class ExerciseHistoryAdapter(
+    private val exerciseDeleteListener: (Int) -> Unit,
+    private val approachAddListener: (Int) -> Unit
+)
     : ListAdapter<ExerciseHistoryWithExercise,
         ExerciseHistoryAdapter.ExerciseHistoryViewHolder>(ExerciseHistoryDiffCallback()) {
 
@@ -26,6 +29,10 @@ class ExerciseHistoryAdapter(private val exerciseDeleteListener: (Int) -> Unit)
 
         holder.itemView.findViewById<ImageView>(R.id.remove_exercise_from_history).setOnClickListener {
             exerciseDeleteListener(currentItem.exerciseHistory.id)
+        }
+
+        holder.itemView.findViewById<ImageView>(R.id.add_exercise_to_history).setOnClickListener {
+            approachAddListener(currentItem.exerciseHistory.id)
         }
     }
 
