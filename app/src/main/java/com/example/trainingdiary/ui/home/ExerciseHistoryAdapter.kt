@@ -12,7 +12,7 @@ import com.google.android.flexbox.FlexboxLayout
 
 class ExerciseHistoryAdapter(
     private val exerciseDeleteListener: (Int) -> Unit,
-    private val approachAddListener: (Int) -> Unit
+    private val approachAddListener: (Int, Int?, Float?, Int?) -> Unit
 )
     : ListAdapter<ExerciseHistoryWithExercise,
         ExerciseHistoryAdapter.ExerciseHistoryViewHolder>(ExerciseHistoryDiffCallback()) {
@@ -31,10 +31,17 @@ class ExerciseHistoryAdapter(
             exerciseDeleteListener(currentItem.exerciseHistory.id)
         }
 
-        holder.itemView.findViewById<ImageView>(R.id.add_exercise_to_history).setOnClickListener {
-            approachAddListener(currentItem.exerciseHistory.id)
+        holder.itemView.findViewById<ImageView>(R.id.add_approach_to_history).setOnClickListener {
+            approachAddListener(currentItem.exerciseHistory.id, null, null, null)
         }
 
+        handleApproach(holder, currentItem)
+    }
+
+    private fun handleApproach(
+        holder: ExerciseHistoryViewHolder,
+        currentItem: ExerciseHistoryWithExercise
+    ) {
         val flexboxLayout = holder.itemView.findViewById<FlexboxLayout>(R.id.approaches_flexbox)
         flexboxLayout.removeAllViewsInLayout()
 
@@ -49,6 +56,11 @@ class ExerciseHistoryAdapter(
                 approach.weight.toString() + " Kg"
             approachView.findViewById<TextView>(R.id.repeat).text =
                 approach.repeatCount.toString() + " Rep"
+
+            approachView.setOnClickListener {
+                approachAddListener(currentItem.exerciseHistory.id, approach.id, approach.weight, approach.repeatCount)
+            }
+
             flexboxLayout.addView(approachView)
         }
     }

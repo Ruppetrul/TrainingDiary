@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.example.trainingdiary.models.Approach
 import com.example.trainingdiary.models.Exercise
 import com.example.trainingdiary.models.ExerciseHistory
@@ -40,4 +41,7 @@ interface ExerciseDao {
 
     @Insert
     fun insertApproach(approach: Approach)
+
+    @Update
+    fun updateApproach(approach: Approach)
 }

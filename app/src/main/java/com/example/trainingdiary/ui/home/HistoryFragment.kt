@@ -67,8 +67,8 @@ class HistoryFragment : Fragment() {
                     database.exerciseDao().deleteHistoryById(exerciseId)
                 }
             },
-            approachAddListener = { exerciseId ->
-                showDialog(requireContext(), exerciseId)
+            approachAddListener = { exerciseId, approachId, weight, repeat ->
+                showDialog(requireContext(), exerciseId, approachId, weight, repeat)
             }
         )
 
@@ -91,15 +91,23 @@ class HistoryFragment : Fragment() {
         return root
     }
 
-    private fun showDialog(context: Context, exerciseId: Int) {
+    private fun showDialog(context: Context, exerciseId: Int, approachId: Int? = null, weight: Float? = null, repeat: Int? = null) {
         val inflater = LayoutInflater.from(context)
         val dialogView = inflater.inflate(R.layout.add_aproach, null)
 
-        val weight = dialogView.findViewById<EditText>(R.id.weight)
+        val weightView = dialogView.findViewById<EditText>(R.id.weight)
+
+        if (weight != null) {
+            weightView.setText(weight.toString())
+        }
+
         val decrementButton1 = dialogView.findViewById<Button>(R.id.weightDecrementButton)
         val incrementButton1 = dialogView.findViewById<Button>(R.id.weightIncrementButton)
 
-        val repeat = dialogView.findViewById<EditText>(R.id.repeatNumberInput)
+        val repeatView = dialogView.findViewById<EditText>(R.id.repeatNumberInput)
+        if (weight != null) {
+            repeatView.setText(repeat.toString())
+        }
         val decrementButton2 = dialogView.findViewById<Button>(R.id.repeatDecrementButton)
         val incrementButton2 = dialogView.findViewById<Button>(R.id.repeatIncrementButton)
 
@@ -108,9 +116,12 @@ class HistoryFragment : Fragment() {
         builder.setView(dialogView)
 
         builder.setPositiveButton("Save") { dialog, which ->
-            val weight = weight.text.toString().toIntOrNull() ?: 0 //TODO to float
-            val repeat = repeat.text.toString().toIntOrNull() ?: 0
-            onSave(exerciseId, weight.toFloat(), repeat)
+            onSave(
+                exerciseId,
+                (weightView.text.toString().toIntOrNull() ?: 0).toFloat(),
+                repeatView.text.toString().toIntOrNull() ?: 0,
+                approachId
+            )
             dialog.dismiss()
         }
 
@@ -121,10 +132,10 @@ class HistoryFragment : Fragment() {
         val dialog = builder.create()
         dialog.show()
 
-        setButtonClickListener(decrementButton1, weight, false)
-        setButtonClickListener(incrementButton1, weight, true)
-        setButtonClickListener(decrementButton2, repeat, false)
-        setButtonClickListener(incrementButton2, repeat, true)
+        setButtonClickListener(decrementButton1, weightView, false)
+        setButtonClickListener(incrementButton1, weightView, true)
+        setButtonClickListener(decrementButton2, repeatView, false)
+        setButtonClickListener(incrementButton2, repeatView, true)
     }
 
     private fun setButtonClickListener(button: Button, inputField: EditText, increment: Boolean) {
@@ -134,12 +145,22 @@ class HistoryFragment : Fragment() {
         }
     }
 
-    private fun onSave(exerciseId: Int, weight: Float, repeat: Int) {
+    private fun onSave(exerciseId: Int, weight: Float, repeat: Int, approachId: Int? = null) {
         val database = AppDatabase.getDatabase(requireContext())
 
-        val approach = Approach(0, exerciseId, repeat, weight)
         CoroutineScope(Dispatchers.IO).launch {
-            database.exerciseDao().insertApproach(approach)
+            val approach = Approach(
+                id = approachId ?: 0,
+                exerciseHistoryId = exerciseId,
+                repeatCount = repeat,
+                weight = weight
+            )
+
+            if (approachId != null && approachId != 0) {
+                database.exerciseDao().updateApproach(approach)
+            } else {
+                database.exerciseDao().insertApproach(approach)
+            }
         }
     }
 

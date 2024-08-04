@@ -17,7 +17,7 @@
         android:textSize="18sp" />
 
     <ImageView
-        android:id="@+id/add_exercise_to_history"
+        android:id="@+id/add_approach_to_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/add_exercise_to_history"
