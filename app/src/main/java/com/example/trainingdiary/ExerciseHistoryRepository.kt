@@ -8,7 +8,6 @@ import java.util.Date
 
 class ExerciseHistoryRepository(private val exerciseHistoryDao: ExerciseDao) {
 
-
     fun getHistoryForPosition(position: Int): LiveData<List<ExerciseHistoryWithExercise>> {
         val (startOfDay, endOfDay) = getStartAndEndOfDay(LocalDate.ofEpochDay(position.toLong()))
         return exerciseHistoryDao.getExerciseHistoryByDate(startOfDay, endOfDay)

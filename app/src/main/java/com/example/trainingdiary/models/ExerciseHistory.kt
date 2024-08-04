@@ -27,5 +27,10 @@ data class ExerciseHistoryWithExercise(
         parentColumn = "exerciseId",
         entityColumn = "id"
     )
-    val exercise: Exercise
+    val exercise: Exercise,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "exerciseHistoryId"
+    )
+    val approaches: List<Approach>
 )
