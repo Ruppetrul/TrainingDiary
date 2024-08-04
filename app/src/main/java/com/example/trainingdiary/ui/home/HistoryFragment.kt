@@ -60,12 +60,9 @@ class HistoryFragment : Fragment() {
         _binding = FragmentHomeHistoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val database = AppDatabase.getDatabase(requireContext())
         val exerciseHistoryAdapter = ExerciseHistoryAdapter(
             exerciseDeleteListener = { exerciseId ->
-                CoroutineScope(Dispatchers.IO).launch {
-                    database.exerciseDao().deleteHistoryById(exerciseId)
-                }
+                showDeleteConfirmationDialog(requireContext(), exerciseId)
             },
             approachAddListener = { exerciseId, approachId, weight, repeat ->
                 showDialog(requireContext(), exerciseId, approachId, weight, repeat)
@@ -176,6 +173,28 @@ class HistoryFragment : Fragment() {
                 database.exerciseDao().insertApproach(approach)
             }
         }
+    }
+
+    private fun showDeleteConfirmationDialog(context: Context, exerciseId: Int) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Confirm Deletion")
+        builder.setMessage("Are you sure you want to delete this exercise?")
+
+        builder.setPositiveButton("Confirm") { dialog, _ ->
+            val database = AppDatabase.getDatabase(requireContext())
+
+            CoroutineScope(Dispatchers.IO).launch {
+                database.exerciseDao().deleteHistoryById(exerciseId)
+            }
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
     override fun onDestroyView() {
