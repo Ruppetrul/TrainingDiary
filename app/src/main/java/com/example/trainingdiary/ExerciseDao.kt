@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import com.example.trainingdiary.models.Approach
 import com.example.trainingdiary.models.Exercise
 import com.example.trainingdiary.models.ExerciseHistory
 import com.example.trainingdiary.models.ExerciseHistoryWithExercise
@@ -36,4 +37,7 @@ interface ExerciseDao {
 
     @Query("SELECT * FROM exercise_history WHERE datetime >= :startOfDay AND datetime < :endOfDay")
     fun getExerciseHistoryByDate(startOfDay: Date, endOfDay: Date): LiveData<List<ExerciseHistoryWithExercise>>
+
+    @Insert
+    fun insertApproach(approach: Approach)
 }

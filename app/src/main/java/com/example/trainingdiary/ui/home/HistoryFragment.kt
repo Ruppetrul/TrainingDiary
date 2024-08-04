@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trainingdiary.AppDatabase
 import com.example.trainingdiary.R
 import com.example.trainingdiary.databinding.FragmentHomeHistoryBinding
+import com.example.trainingdiary.models.Approach
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -94,22 +95,22 @@ class HistoryFragment : Fragment() {
         val inflater = LayoutInflater.from(context)
         val dialogView = inflater.inflate(R.layout.add_aproach, null)
 
-        val numberInput1 = dialogView.findViewById<EditText>(R.id.numberInput1)
-        val decrementButton1 = dialogView.findViewById<Button>(R.id.decrementButton1)
-        val incrementButton1 = dialogView.findViewById<Button>(R.id.incrementButton1)
+        val weight = dialogView.findViewById<EditText>(R.id.weight)
+        val decrementButton1 = dialogView.findViewById<Button>(R.id.weightDecrementButton)
+        val incrementButton1 = dialogView.findViewById<Button>(R.id.weightIncrementButton)
 
-        val numberInput2 = dialogView.findViewById<EditText>(R.id.numberInput2)
-        val decrementButton2 = dialogView.findViewById<Button>(R.id.decrementButton2)
-        val incrementButton2 = dialogView.findViewById<Button>(R.id.incrementButton2)
+        val repeat = dialogView.findViewById<EditText>(R.id.repeatNumberInput)
+        val decrementButton2 = dialogView.findViewById<Button>(R.id.repeatDecrementButton)
+        val incrementButton2 = dialogView.findViewById<Button>(R.id.repeatIncrementButton)
 
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Set")
         builder.setView(dialogView)
 
         builder.setPositiveButton("Save") { dialog, which ->
-            val value1 = numberInput1.text.toString().toIntOrNull() ?: 0
-            val value2 = numberInput2.text.toString().toIntOrNull() ?: 0
-            onSave(exerciseId, value1, value2)
+            val weight = weight.text.toString().toIntOrNull() ?: 0 //TODO to float
+            val repeat = repeat.text.toString().toIntOrNull() ?: 0
+            onSave(exerciseId, weight.toFloat(), repeat)
             dialog.dismiss()
         }
 
@@ -120,10 +121,10 @@ class HistoryFragment : Fragment() {
         val dialog = builder.create()
         dialog.show()
 
-        setButtonClickListener(decrementButton1, numberInput1, false)
-        setButtonClickListener(incrementButton1, numberInput1, true)
-        setButtonClickListener(decrementButton2, numberInput2, false)
-        setButtonClickListener(incrementButton2, numberInput2, true)
+        setButtonClickListener(decrementButton1, weight, false)
+        setButtonClickListener(incrementButton1, weight, true)
+        setButtonClickListener(decrementButton2, repeat, false)
+        setButtonClickListener(incrementButton2, repeat, true)
     }
 
     private fun setButtonClickListener(button: Button, inputField: EditText, increment: Boolean) {
@@ -133,8 +134,13 @@ class HistoryFragment : Fragment() {
         }
     }
 
-    private fun onSave(exerciseId: Int, value1: Int, value2: Int) {
-        //TODO
+    private fun onSave(exerciseId: Int, weight: Float, repeat: Int) {
+        val database = AppDatabase.getDatabase(requireContext())
+
+        val approach = Approach(0, exerciseId, repeat, weight)
+        CoroutineScope(Dispatchers.IO).launch {
+            database.exerciseDao().insertApproach(approach)
+        }
     }
 
     override fun onDestroyView() {
