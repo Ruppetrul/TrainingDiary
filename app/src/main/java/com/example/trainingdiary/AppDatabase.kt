@@ -7,11 +7,17 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import com.example.trainingdiary.models.Approach
+import com.example.trainingdiary.models.BodyPart
 import com.example.trainingdiary.models.Exercise
 import com.example.trainingdiary.models.ExerciseHistory
 import java.util.Date
 
-@Database(entities = [Exercise::class, ExerciseHistory::class, Approach::class], version = 1)
+@Database(entities = [
+    Exercise::class,
+    ExerciseHistory::class,
+    Approach::class,
+    BodyPart::class
+], version = 1)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao

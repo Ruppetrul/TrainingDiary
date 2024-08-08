@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.example.trainingdiary.models.Approach
+import com.example.trainingdiary.models.BodyPart
 import com.example.trainingdiary.models.Exercise
 import com.example.trainingdiary.models.ExerciseHistory
 import com.example.trainingdiary.models.ExerciseHistoryWithExercise
@@ -20,8 +21,17 @@ interface ExerciseDao {
     @Query("SELECT COUNT(*) FROM exercise")
     fun getCount(): Int
 
+    @Query("SELECT COUNT(*) FROM bodypart")
+    fun getBodyPartCount(): Int
+
+    @Insert
+    suspend fun insertExercise(entity: Exercise)
+
     @Insert
     suspend fun insertAll(entities: List<Exercise>)
+
+    @Insert
+    suspend fun insertBodyPartsAll(entities: List<BodyPart>)
 
     @Query("SELECT * FROM exercise")
     fun getAllRecords(): List<Exercise>
