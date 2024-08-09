@@ -23,7 +23,7 @@ class BodyPartAdapter(private val itemClickListener: (Int) -> Unit) : RecyclerVi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.exercise_item, parent, false)
+            .inflate(R.layout.body_part_item, parent, false)
         return RecordViewHolder(itemView)
     }
 

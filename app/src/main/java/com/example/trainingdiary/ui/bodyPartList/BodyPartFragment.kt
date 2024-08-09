@@ -9,8 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trainingdiary.R
-import com.example.trainingdiary.databinding.FragmentExerciseBinding
-
+import com.example.trainingdiary.databinding.FragmentBodyTypeBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +17,7 @@ import kotlinx.coroutines.withContext
 
 class BodyPartFragment : Fragment() {
 
-    private var _binding: FragmentExerciseBinding? = null
+    private var _binding: FragmentBodyTypeBinding? = null
     private val binding get() = _binding!!
     private lateinit var bodyPartViewModel: BodyPartViewModel
 
@@ -27,7 +26,7 @@ class BodyPartFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentExerciseBinding.inflate(inflater, container, false)
+        _binding = FragmentBodyTypeBinding.inflate(inflater, container, false)
         val root = binding.root
 
         val adapter = BodyPartAdapter { bodyTypeId ->
@@ -37,8 +36,8 @@ class BodyPartFragment : Fragment() {
 
             findNavController().navigate(R.id.action_body_part_to_exercises, bundle)
         }
-        binding.exercises.layoutManager = LinearLayoutManager(context)
-        binding.exercises.adapter = adapter
+        binding.bodyTypes.layoutManager = LinearLayoutManager(context)
+        binding.bodyTypes.adapter = adapter
 
         bodyPartViewModel = ViewModelProvider(this)[BodyPartViewModel::class.java]
 
