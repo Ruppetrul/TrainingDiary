@@ -1,7 +1,6 @@
-package com.example.trainingdiary.ui.exerciseList
+package com.example.trainingdiary.ui.bodyPartList
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,16 +10,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trainingdiary.R
 import com.example.trainingdiary.databinding.FragmentExerciseBinding
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ExerciseFragment : Fragment() {
+class BodyPartFragment : Fragment() {
 
     private var _binding: FragmentExerciseBinding? = null
     private val binding get() = _binding!!
-    private lateinit var exerciseViewModel: ExerciseViewModel
+    private lateinit var bodyPartViewModel: BodyPartViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,21 +30,21 @@ class ExerciseFragment : Fragment() {
         _binding = FragmentExerciseBinding.inflate(inflater, container, false)
         val root = binding.root
 
-        val adapter = ExerciseAdapter { exerciseId ->
+        val adapter = BodyPartAdapter { bodyTypeId ->
             val bundle = Bundle()
-            bundle.putInt("exerciseId", exerciseId)
             bundle.putInt("positionId", arguments?.getInt("positionId")!!)
+            bundle.putInt("bodyTypeId", bodyTypeId)
 
-            findNavController().navigate(R.id.action_exercises_to_home, bundle)
+            findNavController().navigate(R.id.action_body_part_to_exercises, bundle)
         }
         binding.exercises.layoutManager = LinearLayoutManager(context)
         binding.exercises.adapter = adapter
 
-        exerciseViewModel = ViewModelProvider(this)[ExerciseViewModel::class.java]
+        bodyPartViewModel = ViewModelProvider(this)[BodyPartViewModel::class.java]
 
         CoroutineScope(Dispatchers.Main).launch {
             val records = withContext(Dispatchers.IO) {
-                exerciseViewModel.getExercisesByBodyPart(arguments?.getInt("bodyTypeId", 0)!!)
+                bodyPartViewModel.getBodyTypes()
             }
             adapter.setRecords(records)
         }

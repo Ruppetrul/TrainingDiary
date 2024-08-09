@@ -9,3 +9,10 @@ data class BodyPart (
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "title") val title: String,
 )
+
+@Entity
+data class BodyPartExerciseRelation (
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @ColumnInfo(name = "bodyPartId") val bodyPartId: Int,
+    @ColumnInfo(name = "exerciseId") val exerciseId: Int,
+)

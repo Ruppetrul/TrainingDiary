@@ -24,16 +24,29 @@
         tools:layout="@layout/fragment_notifications" />
 
     <fragment
-        android:id="@+id/listFragment"
+        android:id="@+id/exerciseListFragment"
         android:name="com.example.trainingdiary.ui.exerciseList.ExerciseFragment"
         android:label="List Fragment"
         tools:layout="@layout/fragment_exercise" />
 
+    <fragment
+        android:id="@+id/bodyPartListFragment"
+        android:name="com.example.trainingdiary.ui.bodyPartList.BodyPartFragment"
+        android:label="Body Part Fragment"
+        tools:layout="@layout/fragment_body_type" />
+
     <action
-        android:id="@+id/action_currentFragment_to_listFragment"
-        app:destination="@id/listFragment" />
+        android:id="@+id/action_HomeFragment_to_BodyPartFragment"
+        app:destination="@id/bodyPartListFragment" />
     <action
-        android:id="@+id/action_fragment2_to_fragment1"
+        android:id="@+id/action_body_part_to_exercises"
+        app:destination="@id/exerciseListFragment">
+        <argument
+            android:name="bodyType"
+            app:argType="integer" />
+    </action>
+    <action
+        android:id="@+id/action_exercises_to_home"
         app:destination="@id/navigation_home">
         <argument
             android:name="exerciseId"

@@ -8,6 +8,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.example.trainingdiary.models.Approach
 import com.example.trainingdiary.models.BodyPart
+import com.example.trainingdiary.models.BodyPartExerciseRelation
 import com.example.trainingdiary.models.Exercise
 import com.example.trainingdiary.models.ExerciseHistory
 import com.example.trainingdiary.models.ExerciseHistoryWithExercise
@@ -25,7 +26,7 @@ interface ExerciseDao {
     fun getBodyPartCount(): Int
 
     @Insert
-    suspend fun insertExercise(entity: Exercise)
+    suspend fun insertExercise(entity: Exercise): Long
 
     @Insert
     suspend fun insertAll(entities: List<Exercise>)
@@ -33,8 +34,11 @@ interface ExerciseDao {
     @Insert
     suspend fun insertBodyPartsAll(entities: List<BodyPart>)
 
-    @Query("SELECT * FROM exercise")
-    fun getAllRecords(): List<Exercise>
+    @Query("SELECT exercise.* FROM bodypartexerciserelation LEFT JOIN exercise ON bodypartexerciserelation.exerciseId = exercise.id WHERE bodyPartId = :bodyPart")
+    fun getExercisesByBodyPart(bodyPart : Int): List<Exercise>
+
+    @Query("SELECT * FROM bodypart")
+    fun getAllBodyTypes(): List<BodyPart>
 
     @Transaction
     @Query("SELECT * FROM exercise_history")
@@ -57,4 +61,7 @@ interface ExerciseDao {
 
     @Query("DELETE FROM Approach WHERE id = :id")
     fun deleteApproachById(id: Int)
+
+    @Insert
+    suspend fun insertPartExerciseRelation(relation: BodyPartExerciseRelation): Long
 }

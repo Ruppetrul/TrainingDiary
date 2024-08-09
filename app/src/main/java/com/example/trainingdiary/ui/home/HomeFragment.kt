@@ -92,7 +92,7 @@ class HomeFragment : Fragment() {
             val bundle = Bundle()
             bundle.putInt("positionId", currentPosition2)
             findNavController().navigate(
-                R.id.action_currentFragment_to_listFragment,
+                R.id.action_HomeFragment_to_BodyPartFragment,
                 bundle,
                 navOptions
             )
