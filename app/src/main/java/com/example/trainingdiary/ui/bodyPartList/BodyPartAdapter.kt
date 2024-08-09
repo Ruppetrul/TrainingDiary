@@ -31,7 +31,7 @@ class BodyPartAdapter(private val itemClickListener: (Int) -> Unit) : RecyclerVi
         val current = records[position]
         holder.bind(current)
         holder.itemView.setOnClickListener {
-            itemClickListener(current.id!!)
+            itemClickListener(current.id)
         }
     }
 

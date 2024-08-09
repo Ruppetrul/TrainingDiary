@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.example.trainingdiary.AppDatabase
 import com.example.trainingdiary.models.BodyPart
-import com.example.trainingdiary.models.Exercise
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
