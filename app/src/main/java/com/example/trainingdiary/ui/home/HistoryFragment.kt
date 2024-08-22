@@ -112,7 +112,7 @@ class HistoryFragment : Fragment() {
         builder.setTitle("Set")
         builder.setView(dialogView)
 
-        builder.setPositiveButton("Save") { dialog, which ->
+        builder.setPositiveButton(context.getString(R.string.save)) { dialog, which ->
             onSave(
                 exerciseId,
                 weightView.text.toString().toFloat(),
@@ -122,12 +122,12 @@ class HistoryFragment : Fragment() {
             dialog.dismiss()
         }
 
-        builder.setNegativeButton("Cancel") { dialog, which ->
+        builder.setNegativeButton(context.getString(R.string.сonfirm_deletion_negative)) { dialog, which ->
             dialog.dismiss()
         }
 
         if (approachId != null) {
-            builder.setNeutralButton("Delete") { dialog, which ->
+            builder.setNeutralButton(context.getString(R.string.confirm_deletion)) { dialog, which ->
                 onDelete(approachId)
                 dialog.dismiss()
             }

@@ -16,4 +16,7 @@
     <string name="confirm_deletion_text">Вы уверены что хотите удалить упражнение из истории?</string>
     <string name="сonfirm_deletion_positive">Удалить</string>
     <string name="сonfirm_deletion_negative">Отмена</string>
+    <string name="kilogram">Кг</string>
+    <string name="repeats">Повт</string>
+    <string name="save">Сохранить</string>
 </resources>

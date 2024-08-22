@@ -65,9 +65,9 @@ class ExerciseHistoryAdapter(
                 )
 
                 approachView.findViewById<TextView>(R.id.weight).text =
-                    approach.weight.toString() + " Kg"
+                    approach.weight.toString() + " " + holder.itemView.context.getString(R.string.kilogram)
                 approachView.findViewById<TextView>(R.id.repeat).text =
-                    approach.repeatCount.toString() + " Rep"
+                    approach.repeatCount.toString() + " " + holder.itemView.context.getString(R.string.repeats)
 
                 approachView.setOnClickListener {
                     approachAddListener(currentItem.exerciseHistory.id, approach.id, approach.weight, approach.repeatCount)

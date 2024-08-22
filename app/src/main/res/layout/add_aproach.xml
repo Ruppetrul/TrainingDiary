@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:text="Kg" />
+            android:text="@string/kilogram" />
 
         <EditText
             android:id="@+id/weight"
@@ -50,7 +50,7 @@
         <TextView
             android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:text="Rep" />
+            android:text="@string/repeats" />
         <EditText
             android:id="@+id/repeatNumberInput"
             android:layout_width="0dp"
