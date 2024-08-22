@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Дневник тренировок</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="add_approach">Добавить упражнение</string>
+    <string name="hello">Hello</string>
+    <string name="logo">Логотип</string>
+    <string name="start_training">Начни тренировку!</string>
+    <string name="run">Run</string>
+    <string name="remove_exercise_from_history">Удалить упражнение из истории</string>
+    <string name="add_exercise_to_history">Добавить упражнение в историю</string>
+</resources>
