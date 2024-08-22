@@ -193,10 +193,10 @@ class HistoryFragment : Fragment() {
 
     private fun showDeleteConfirmationDialog(context: Context, exerciseId: Int) {
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("Confirm Deletion")
-        builder.setMessage("Are you sure you want to delete this exercise?")
+        builder.setTitle(context.getString(R.string.confirm_deletion) )
+        builder.setMessage(context.getString(R.string.confirm_deletion_text))
 
-        builder.setPositiveButton("Confirm") { dialog, _ ->
+        builder.setPositiveButton(context.getString(R.string.сonfirm_deletion_positive)) { dialog, _ ->
             val database = AppDatabase.getDatabase(requireContext())
 
             CoroutineScope(Dispatchers.IO).launch {
@@ -205,7 +205,7 @@ class HistoryFragment : Fragment() {
             dialog.dismiss()
         }
 
-        builder.setNegativeButton("Cancel") { dialog, _ ->
+        builder.setNegativeButton(context.getString(R.string.сonfirm_deletion_negative)) { dialog, _ ->
             dialog.dismiss()
         }
 

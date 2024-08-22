@@ -12,4 +12,8 @@
     <string name="remove_exercise_from_history">Удалить упражнение из истории</string>
     <string name="add_exercise_to_history">Добавить упражнение в историю</string>
     <string name="add_approach">Нажми чтобы добавить подход</string>
+    <string name="confirm_deletion">Подтвердите удаление</string>
+    <string name="confirm_deletion_text">Вы уверены что хотите удалить упражнение из истории?</string>
+    <string name="сonfirm_deletion_positive">Удалить</string>
+    <string name="сonfirm_deletion_negative">Отмена</string>
 </resources>
