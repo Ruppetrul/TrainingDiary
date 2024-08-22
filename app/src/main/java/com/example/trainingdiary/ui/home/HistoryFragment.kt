@@ -136,23 +136,39 @@ class HistoryFragment : Fragment() {
         val dialog = builder.create()
         dialog.show()
 
-        setButtonClickListener(decrementButton1, weightView, false)
-        setButtonClickListener(incrementButton1, weightView, true)
-        setButtonClickListener(decrementButton2, repeatView, false)
-        setButtonClickListener(incrementButton2, repeatView, true)
+        setButtonClickListener(decrementButton1, weightView, false, true)
+        setButtonClickListener(incrementButton1, weightView, true, true)
+        setButtonClickListener(decrementButton2, repeatView, false, false)
+        setButtonClickListener(incrementButton2, repeatView, true, false)
+    }
+
+    private fun setButtonClickListener(button: Button, inputField: EditText, increment: Boolean, isFloat: Boolean) {
+        button.setOnClickListener {
+            val newValue = if (isFloat) {
+                updateFloatValue(inputField, increment)
+            } else {
+                updateIntValue(inputField, increment)
+            }
+            inputField.setText(newValue)
+        }
+    }
+
+    private fun updateFloatValue(inputField: EditText, increment: Boolean): String {
+        val floatValue = inputField.text.toString().toFloatOrNull() ?: 0f
+        val updatedValue = floatValue + if (increment) 1f else -1f
+        return updatedValue.toString()
+    }
+
+    private fun updateIntValue(inputField: EditText, increment: Boolean): String {
+        val intValue = inputField.text.toString().toIntOrNull() ?: 0
+        val updatedValue = intValue + if (increment) 1 else -1
+        return updatedValue.toString()
     }
 
     private fun onDelete(approachId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val database = AppDatabase.getDatabase(requireContext())
             database.exerciseDao().deleteApproachById(approachId)
-        }
-    }
-
-    private fun setButtonClickListener(button: Button, inputField: EditText, increment: Boolean) {
-        button.setOnClickListener {
-            val value = inputField.text.toString().toIntOrNull() ?: 0
-            inputField.setText((value + if (increment) 1 else -1).toString())
         }
     }
 
