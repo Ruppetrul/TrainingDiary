@@ -127,7 +127,7 @@ class HistoryFragment : Fragment() {
         }
 
         if (approachId != null) {
-            builder.setNeutralButton(context.getString(R.string.confirm_deletion)) { dialog, which ->
+            builder.setNeutralButton(context.getString(R.string.сonfirm_deletion_positive)) { dialog, which ->
                 onDelete(approachId)
                 dialog.dismiss()
             }
