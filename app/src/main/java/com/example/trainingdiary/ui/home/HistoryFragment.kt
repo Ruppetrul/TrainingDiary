@@ -115,7 +115,7 @@ class HistoryFragment : Fragment() {
         builder.setPositiveButton("Save") { dialog, which ->
             onSave(
                 exerciseId,
-                (weightView.text.toString().toIntOrNull() ?: 0).toFloat(),
+                weightView.text.toString().toFloat(),
                 repeatView.text.toString().toIntOrNull() ?: 0,
                 approachId
             )
