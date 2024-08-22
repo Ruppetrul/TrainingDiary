@@ -1,3 +1,5 @@
+import android.graphics.Typeface
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,23 +47,34 @@ class ExerciseHistoryAdapter(
         val flexboxLayout = holder.itemView.findViewById<FlexboxLayout>(R.id.approaches_flexbox)
         flexboxLayout.removeAllViewsInLayout()
 
-        for (approach in currentItem.approaches) {
-            val approachView = LayoutInflater.from(holder.itemView.context).inflate(
-                R.layout.approach_item,
-                flexboxLayout,
-                false
-            )
-
-            approachView.findViewById<TextView>(R.id.weight).text =
-                approach.weight.toString() + " Kg"
-            approachView.findViewById<TextView>(R.id.repeat).text =
-                approach.repeatCount.toString() + " Rep"
-
-            approachView.setOnClickListener {
-                approachAddListener(currentItem.exerciseHistory.id, approach.id, approach.weight, approach.repeatCount)
+        if (currentItem.approaches.isEmpty()) {
+            val emptyTextView = TextView(holder.itemView.context).apply {
+                text = holder.itemView.context.getString(R.string.add_approach)
+                textSize = 12f
+                setTypeface(null, Typeface.BOLD)
+                gravity = Gravity.CENTER
             }
 
-            flexboxLayout.addView(approachView)
+            flexboxLayout.addView(emptyTextView)
+        } else {
+            for (approach in currentItem.approaches) {
+                val approachView = LayoutInflater.from(holder.itemView.context).inflate(
+                    R.layout.approach_item,
+                    flexboxLayout,
+                    false
+                )
+
+                approachView.findViewById<TextView>(R.id.weight).text =
+                    approach.weight.toString() + " Kg"
+                approachView.findViewById<TextView>(R.id.repeat).text =
+                    approach.repeatCount.toString() + " Rep"
+
+                approachView.setOnClickListener {
+                    approachAddListener(currentItem.exerciseHistory.id, approach.id, approach.weight, approach.repeatCount)
+                }
+
+                flexboxLayout.addView(approachView)
+            }
         }
     }
 

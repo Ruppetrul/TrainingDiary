@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:contentDescription="@string/add_approach"
+        android:contentDescription="@string/add_exercise"
         android:focusable="true"
         android:layout_margin="16dp"
         app:srcCompat="@android:drawable/ic_input_add"
