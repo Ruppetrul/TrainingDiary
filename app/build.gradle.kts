@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.ksp)
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 }
 
 android {
@@ -40,7 +41,8 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.jetbrains.kotlinx.serialization.core)
+    implementation(libs.jetbrains.kotlinx.serialization.cbor)
     implementation(libs.flexbox)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)

@@ -4,15 +4,20 @@ import ExerciseHistoryAdapter
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trainingdiary.AppDatabase
+import com.example.trainingdiary.ExerciseStatisticManager.Companion.getExerciseStat
+import com.example.trainingdiary.ExerciseStatisticManager.Companion.getTopWeights
+import com.example.trainingdiary.ExerciseStatisticManager.Companion.updateExerciseStat
 import com.example.trainingdiary.R
 import com.example.trainingdiary.databinding.FragmentHomeHistoryBinding
 import com.example.trainingdiary.models.Approach
@@ -64,8 +69,8 @@ class HistoryFragment : Fragment() {
             exerciseDeleteListener = { exerciseId ->
                 showDeleteConfirmationDialog(requireContext(), exerciseId)
             },
-            approachAddListener = { exerciseId, approachId, weight, repeat ->
-                showDialog(requireContext(), exerciseId, approachId, weight, repeat)
+            approachAddListener = { exerciseHistoryId, approachId, weight, repeat, approachNumber, exerciseId ->
+                showDialog(requireContext(), exerciseHistoryId, approachId, weight, repeat, approachNumber, exerciseId)
             }
         )
 
@@ -88,9 +93,10 @@ class HistoryFragment : Fragment() {
         return root
     }
 
-    private fun showDialog(context: Context, exerciseId: Int, approachId: Int? = null, weight: Float? = null, repeat: Int? = null) {
+    private fun showDialog(context: Context, exerciseHistoryId: Int, approachId: Int? = null, weight: Float? = null, repeat: Int? = null, approachNumber: Int, exerciseId: Int) {
         val inflater = LayoutInflater.from(context)
         val dialogView = inflater.inflate(R.layout.add_aproach, null)
+        val weightSuggest = dialogView.findViewById<LinearLayout>(R.id.weightSuggest)
 
         val weightView = dialogView.findViewById<EditText>(R.id.weight)
 
@@ -112,10 +118,35 @@ class HistoryFragment : Fragment() {
         builder.setTitle("Set")
         builder.setView(dialogView)
 
+        val stat = getExerciseStat(context, exerciseId, approachNumber)
+        Log.d("WEIGHT", "stat: $stat")
+        stat?.let {
+            val topWeights = getTopWeights(it).take(3)
+            Log.d("WEIGHT", "showDialog: $topWeights")
+
+            topWeights.forEach { entry ->
+                val weight = entry.key
+                val count = entry.value
+
+                val button = Button(context)
+                button.text = "$weight kg"
+                button.textSize = 12f
+                button.setOnClickListener {
+                    weightView.setText("$weight")
+                }
+
+                weightSuggest.addView(button)
+            }
+        }
+
         builder.setPositiveButton(context.getString(R.string.save)) { dialog, which ->
+            val inputWeight = weightView.text.toString().toFloat()
+
+            saveForStatistic(exerciseId, approachNumber, inputWeight)
+
             onSave(
-                exerciseId,
-                weightView.text.toString().toFloat(),
+                exerciseHistoryId,
+                inputWeight,
                 repeatView.text.toString().toIntOrNull() ?: 0,
                 approachId
             )
@@ -140,6 +171,10 @@ class HistoryFragment : Fragment() {
         setButtonClickListener(incrementButton1, weightView, true, true)
         setButtonClickListener(decrementButton2, repeatView, false, false)
         setButtonClickListener(incrementButton2, repeatView, true, false)
+    }
+
+    private fun saveForStatistic(exerciseId: Int, approachNumber: Int, value: Float) {
+        updateExerciseStat(requireContext(), exerciseId, approachNumber, value)
     }
 
     private fun setButtonClickListener(button: Button, inputField: EditText, increment: Boolean, isFloat: Boolean) {
