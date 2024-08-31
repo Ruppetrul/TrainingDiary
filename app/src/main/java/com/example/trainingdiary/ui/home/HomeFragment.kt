@@ -126,7 +126,33 @@ class HomeFragment : Fragment() {
 
         val formattedDayOfWeek = dayOfWeek?.substring(0, 1)!!.uppercase() + dayOfWeek.substring(1)
 
-        val title = "$formattedDayOfWeek, $dayOfMonth $monthName"
+        val todayCalendar = Calendar.getInstance()
+        todayCalendar.set(Calendar.HOUR_OF_DAY, 0)
+        todayCalendar.set(Calendar.MINUTE, 0)
+        todayCalendar.set(Calendar.SECOND, 0)
+        todayCalendar.set(Calendar.MILLISECOND, 0)
+
+        val dateTitle = when {
+            calendar.get(Calendar.YEAR) == todayCalendar.get(Calendar.YEAR) &&
+                    calendar.get(Calendar.DAY_OF_YEAR) == todayCalendar.get(Calendar.DAY_OF_YEAR) -> {
+                getString(R.string.today)
+            }
+            calendar.get(Calendar.YEAR) == todayCalendar.get(Calendar.YEAR) &&
+                    calendar.get(Calendar.DAY_OF_YEAR) == todayCalendar.get(Calendar.DAY_OF_YEAR) - 1 -> {
+                getString(R.string.yesterday)
+            }
+            calendar.get(Calendar.YEAR) == todayCalendar.get(Calendar.YEAR) &&
+                    calendar.get(Calendar.DAY_OF_YEAR) == todayCalendar.get(Calendar.DAY_OF_YEAR) + 1 -> {
+                getString(R.string.tomorrow)
+            }
+            else -> "$formattedDayOfWeek, $dayOfMonth $monthName"
+        }
+
+        val title = if (dateTitle == "$formattedDayOfWeek, $dayOfMonth $monthName") {
+            dateTitle
+        } else {
+            "$formattedDayOfWeek, $dayOfMonth $monthName ($dateTitle)"
+        }
 
         (requireActivity() as AppCompatActivity).supportActionBar?.title = title
     }
