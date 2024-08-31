@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 data class BodyPart (
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "title") val title: String,
+    @ColumnInfo(name = "logo") val logo: String?
 )
 
 @Entity

@@ -12,13 +12,13 @@ class DatabaseSeeder(private val database: AppDatabase) {
         CoroutineScope(Dispatchers.IO).launch {
             if (database.exerciseDao().getBodyPartCount() == 0) {
                 val initialBodyParts = listOf(
-                    BodyPart(id = 1, title = "Руки"),
-                    BodyPart(id = 2, title = "Ноги"),
-                    BodyPart(id = 3, title = "Торс"),
-                    BodyPart(id = 4, title = "Спина"),
-                    BodyPart(id = 5, title = "Грудь"),
-                    BodyPart(id = 6, title = "Плечи"),
-                    BodyPart(id = 7, title = "Пресс")
+                    BodyPart(id = 1, title = "Руки", "hands_logo"),
+                    BodyPart(id = 2, title = "Ноги", "legs_logo"),
+                    BodyPart(id = 3, title = "Торс", "body_logo"),
+                    BodyPart(id = 4, title = "Спина", "back_logo"),
+                    BodyPart(id = 5, title = "Грудь", "chest_logo"),
+                    BodyPart(id = 6, title = "Плечи", "shoulders_logo"),
+                    BodyPart(id = 7, title = "Пресс", "press_logo")
                 )
                 database.exerciseDao().insertBodyPartsAll(initialBodyParts)
             }

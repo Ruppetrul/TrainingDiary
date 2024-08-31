@@ -3,6 +3,7 @@ package com.example.trainingdiary.models
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Junction
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 import java.util.Date
@@ -32,5 +33,16 @@ data class ExerciseHistoryWithExercise(
         parentColumn = "id",
         entityColumn = "exerciseHistoryId"
     )
-    val approaches: List<Approach>
+    val approaches: List<Approach>,
+    @Relation(
+        entity = BodyPart::class,
+        parentColumn = "exerciseId",
+        entityColumn = "id",
+        associateBy = Junction(
+            value = BodyPartExerciseRelation::class,
+            parentColumn = "exerciseId",
+            entityColumn = "bodyPartId"
+        )
+    )
+    val bodyParts: List<BodyPart>
 )

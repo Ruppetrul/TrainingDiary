@@ -71,7 +71,8 @@ class HistoryFragment : Fragment() {
             },
             approachAddListener = { exerciseHistoryId, approachId, weight, repeat, approachNumber, exerciseId ->
                 showDialog(requireContext(), exerciseHistoryId, approachId, weight, repeat, approachNumber, exerciseId)
-            }
+            },
+            requireContext()
         )
 
         binding.exercisesHistory.apply {

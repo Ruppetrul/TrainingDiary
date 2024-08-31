@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/bodyPartListFragment"
         android:name="com.example.trainingdiary.ui.bodyPartList.BodyPartFragment"
-        android:label="Body Part Fragment"
+        android:label="@string/body_part_fragment"
         tools:layout="@layout/fragment_body_type" />
 
     <action

@@ -13,12 +13,20 @@
         android:layout_height="wrap_content"
         android:padding="5dp">
 
+        <ImageView
+            android:id="@+id/history_exercise_avatar"
+            android:layout_width="15pt"
+            android:layout_height="15pt"
+            android:contentDescription="@string/exercise_avatar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <TextView
             android:id="@+id/id"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/run"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/history_exercise_avatar"
             app:layout_constraintTop_toTopOf="parent"
             android:paddingBottom="5dp"
             android:textSize="18sp" />

@@ -22,4 +22,6 @@
     <string name="yesterday">Yesterday</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="trainings">Trainings</string>
+    <string name="exercise_avatar">Exercise avatar</string>
+    <string name="body_part_fragment">Body Part Fragment</string>
 </resources>

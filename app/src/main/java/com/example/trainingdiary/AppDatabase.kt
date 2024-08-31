@@ -19,7 +19,7 @@ import java.util.Date
     Approach::class,
     BodyPart::class,
     BodyPartExerciseRelation::class,
-], version = 1)
+], version = 2)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao
@@ -34,7 +34,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "GENERAL_DB"
-                ).build()
+                )
+                .addMigrations(Migration1To2.MIGRATION_1_2)
+                .build()
                 INSTANCE = instance
                 instance
             }

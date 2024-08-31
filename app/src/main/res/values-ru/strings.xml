@@ -23,4 +23,6 @@
     <string name="yesterday">Вчера</string>
     <string name="tomorrow">Завтра</string>
     <string name="trainings">Тренировки</string>
+    <string name="exercise_avatar">Картинка упражнения</string>
+    <string name="body_part_fragment">Части тела</string>
 </resources>

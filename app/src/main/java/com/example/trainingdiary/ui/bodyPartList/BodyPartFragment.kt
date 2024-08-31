@@ -29,7 +29,7 @@ class BodyPartFragment : Fragment() {
         _binding = FragmentBodyTypeBinding.inflate(inflater, container, false)
         val root = binding.root
 
-        val adapter = BodyPartAdapter { bodyTypeId ->
+        val adapter = BodyPartAdapter(requireContext()) { bodyTypeId ->
             val bundle = Bundle()
             bundle.putInt("positionId", arguments?.getInt("positionId")!!)
             bundle.putInt("bodyTypeId", bodyTypeId)
