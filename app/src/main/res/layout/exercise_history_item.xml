@@ -25,6 +25,8 @@
             android:id="@+id/id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingStart="5dp"
+            android:paddingEnd="0dp"
             android:hint="@string/run"
             app:layout_constraintStart_toEndOf="@+id/history_exercise_avatar"
             app:layout_constraintTop_toTopOf="parent"
