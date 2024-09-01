@@ -116,7 +116,7 @@ class HistoryFragment : Fragment() {
         val incrementButton2 = dialogView.findViewById<Button>(R.id.repeatIncrementButton)
 
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("Set")
+        builder.setTitle(getString(R.string.approach))
         builder.setView(dialogView)
 
         val stat = getExerciseStat(context, exerciseId, approachNumber)

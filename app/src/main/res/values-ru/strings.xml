@@ -25,4 +25,5 @@
     <string name="trainings">Тренировки</string>
     <string name="exercise_avatar">Картинка упражнения</string>
     <string name="body_part_fragment">Части тела</string>
+    <string name="approach">Подход</string>
 </resources>
