@@ -64,4 +64,7 @@ interface ExerciseDao {
 
     @Insert
     suspend fun insertPartExerciseRelation(relation: BodyPartExerciseRelation): Long
+
+    @Query("SELECT * FROM exercise WHERE title LIKE :name")
+    fun getExercisesByName(name: String): List<Exercise>
 }

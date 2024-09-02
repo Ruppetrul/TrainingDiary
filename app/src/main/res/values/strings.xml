@@ -25,4 +25,5 @@
     <string name="exercise_avatar">Exercise avatar</string>
     <string name="body_part_fragment">Body Part Fragment</string>
     <string name="approach">Approach</string>
+    <string name="exercise_search">Search exercise</string>
 </resources>
