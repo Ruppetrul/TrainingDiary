@@ -42,24 +42,28 @@ class BodyPartFragment : Fragment() {
             findNavController().navigate(R.id.action_body_part_to_exercises, bundle)
         }
 
-        val exerciseAdapter = ExerciseAdapter { exerciseId ->
-            val bundle = Bundle()
-            bundle.putInt("exerciseId", exerciseId)
-            bundle.putInt("positionId", arguments?.getInt("positionId")!!)
-
-            findNavController().navigate(R.id.action_exercises_to_home, bundle)
-        }
-
         binding.bodyTypes.layoutManager = LinearLayoutManager(context)
         binding.bodyTypes.adapter = bodyPartAdapter
 
         bodyPartViewModel = ViewModelProvider(this)[BodyPartViewModel::class.java]
+
+        var exerciseAdapter: ExerciseAdapter? = null;
 
         CoroutineScope(Dispatchers.Main).launch {
             val records = withContext(Dispatchers.IO) {
                 bodyPartViewModel.getBodyTypes()
             }
             bodyPartAdapter.setRecords(records)
+
+            exerciseAdapter = ExerciseAdapter({ exerciseId ->
+                val bundle = Bundle()
+                bundle.putInt("exerciseId", exerciseId)
+                bundle.putInt("positionId", arguments?.getInt("positionId")!!)
+
+                findNavController().navigate(R.id.action_exercises_to_home, bundle)
+            }, records, requireContext())
+
+
         }
 
         var runnable: Runnable? = null
@@ -73,14 +77,14 @@ class BodyPartFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 runnable?.let { handler.removeCallbacks(it) }
                 runnable = Runnable {
-                    if (s != null && s.length >= 1) {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            val records = withContext(Dispatchers.IO) {
-                                bodyPartViewModel.getExercisesByName(s.toString())
-                            }
-                            exerciseAdapter.setRecords(records)
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val exercisesRecords = withContext(Dispatchers.IO) {
+                            bodyPartViewModel.getExercisesByName(s.toString())
                         }
+                        exerciseAdapter?.setRecords(exercisesRecords)
+                    }
 
+                    if (s != null && s.length >= 1) {
                         binding.bodyTypes.adapter = exerciseAdapter
                     } else {
                         binding.bodyTypes.adapter = bodyPartAdapter

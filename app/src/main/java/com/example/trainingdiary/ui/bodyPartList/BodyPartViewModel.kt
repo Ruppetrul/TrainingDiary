@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.example.trainingdiary.AppDatabase
 import com.example.trainingdiary.models.BodyPart
-import com.example.trainingdiary.models.Exercise
+import com.example.trainingdiary.models.ExerciseWithBodyParts
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -18,7 +18,7 @@ class BodyPartViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    suspend fun getExercisesByName(name: String): List<Exercise> {
+    suspend fun getExercisesByName(name: String): List<ExerciseWithBodyParts> {
         val searchQuery = "%$name%"
 
         return withContext(Dispatchers.IO) {

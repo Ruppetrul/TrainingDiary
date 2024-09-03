@@ -1,22 +1,31 @@
 package com.example.trainingdiary.ui.exerciseList
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trainingdiary.R
-import com.example.trainingdiary.models.Exercise
+import com.example.trainingdiary.models.BodyPart
+import com.example.trainingdiary.models.ExerciseWithBodyParts
 
-class ExerciseAdapter(private val itemClickListener: (Int) -> Unit) : RecyclerView.Adapter<ExerciseAdapter.RecordViewHolder>() {
+class ExerciseAdapter(
+    private val itemClickListener: (Int) -> Unit,
+    private val bodyParts: List<BodyPart>,
+    private val context: Context
+) : RecyclerView.Adapter<ExerciseAdapter.RecordViewHolder>() {
 
-    private var records = emptyList<Exercise>()
+    private var records = emptyList<ExerciseWithBodyParts>()
 
     inner class RecordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val recordTextView: TextView = itemView.findViewById(R.id.title)
 
-        fun bind(record: Exercise) {
+        fun bind(record: ExerciseWithBodyParts) {
             recordTextView.text = record.title
         }
     }
@@ -33,13 +42,28 @@ class ExerciseAdapter(private val itemClickListener: (Int) -> Unit) : RecyclerVi
         holder.itemView.setOnClickListener {
             itemClickListener(current.id!!)
         }
+
+        setDrawableIfExists(context, holder.itemView.findViewById<ImageView>(R.id.exercise_avatar),
+            current.bodyParts.first().logo
+        )
     }
 
     override fun getItemCount() = records.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setRecords(newRecords: List<Exercise>) {
+    fun setRecords(newRecords: List<ExerciseWithBodyParts>) {
         this.records = newRecords
         notifyDataSetChanged()
+    }
+
+    fun setDrawableIfExists(context: Context, imageView: ImageView, drawableName: String?) {
+        val resourceId = context.resources.getIdentifier(drawableName, "drawable", context.packageName)
+
+        if (resourceId != 0) {
+            imageView.setImageResource(resourceId)
+            imageView.setBackgroundColor(Color.WHITE);
+        } else {
+            //imageView.setImageResource(R.drawable.default_image)
+        }
     }
 }

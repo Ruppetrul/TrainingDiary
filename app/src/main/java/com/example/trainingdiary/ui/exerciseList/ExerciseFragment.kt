@@ -29,23 +29,27 @@ class ExerciseFragment : Fragment() {
         _binding = FragmentExerciseBinding.inflate(inflater, container, false)
         val root = binding.root
 
-        val adapter = ExerciseAdapter { exerciseId ->
-            val bundle = Bundle()
-            bundle.putInt("exerciseId", exerciseId)
-            bundle.putInt("positionId", arguments?.getInt("positionId")!!)
-
-            findNavController().navigate(R.id.action_exercises_to_home, bundle)
-        }
-        binding.exercises.layoutManager = LinearLayoutManager(context)
-        binding.exercises.adapter = adapter
-
         exerciseViewModel = ViewModelProvider(this)[ExerciseViewModel::class.java]
 
         CoroutineScope(Dispatchers.Main).launch {
             val records = withContext(Dispatchers.IO) {
+                exerciseViewModel.getBodyTypes()
+            }
+            val adapter = ExerciseAdapter({ exerciseId ->
+                val bundle = Bundle()
+                bundle.putInt("exerciseId", exerciseId)
+                bundle.putInt("positionId", arguments?.getInt("positionId")!!)
+
+                findNavController().navigate(R.id.action_exercises_to_home, bundle)
+            }, records, requireContext())
+
+            binding.exercises.layoutManager = LinearLayoutManager(context)
+            binding.exercises.adapter = adapter
+
+            val exercisesBodyPartRecords = withContext(Dispatchers.IO) {
                 exerciseViewModel.getExercisesByBodyPart(arguments?.getInt("bodyTypeId", 0)!!)
             }
-            adapter.setRecords(records)
+            adapter.setRecords(exercisesBodyPartRecords)
         }
 
         return root

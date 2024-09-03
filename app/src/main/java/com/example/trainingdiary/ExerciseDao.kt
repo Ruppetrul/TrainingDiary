@@ -12,6 +12,7 @@ import com.example.trainingdiary.models.BodyPartExerciseRelation
 import com.example.trainingdiary.models.Exercise
 import com.example.trainingdiary.models.ExerciseHistory
 import com.example.trainingdiary.models.ExerciseHistoryWithExercise
+import com.example.trainingdiary.models.ExerciseWithBodyParts
 import java.util.Date
 
 @Dao
@@ -35,7 +36,7 @@ interface ExerciseDao {
     suspend fun insertBodyPartsAll(entities: List<BodyPart>)
 
     @Query("SELECT exercise.* FROM bodypartexerciserelation LEFT JOIN exercise ON bodypartexerciserelation.exerciseId = exercise.id WHERE bodyPartId = :bodyPart")
-    fun getExercisesByBodyPart(bodyPart : Int): List<Exercise>
+    fun getExercisesByBodyPart(bodyPart : Int): List<ExerciseWithBodyParts>
 
     @Query("SELECT * FROM bodypart")
     fun getAllBodyTypes(): List<BodyPart>
@@ -66,5 +67,5 @@ interface ExerciseDao {
     suspend fun insertPartExerciseRelation(relation: BodyPartExerciseRelation): Long
 
     @Query("SELECT * FROM exercise WHERE title LIKE :name")
-    fun getExercisesByName(name: String): List<Exercise>
+    fun getExercisesByName(name: String): List<ExerciseWithBodyParts>
 }
