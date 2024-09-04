@@ -61,7 +61,7 @@ class BodyPartFragment : Fragment() {
                 bundle.putInt("positionId", arguments?.getInt("positionId")!!)
 
                 findNavController().navigate(R.id.action_exercises_to_home, bundle)
-            }, records, requireContext())
+            }, requireContext())
 
 
         }

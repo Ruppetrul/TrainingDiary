@@ -29,7 +29,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
-            android:text="0"
+            android:text="@string/zero"
             android:gravity="center"/>
 
         <Button
@@ -64,7 +64,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:text="0"
+            android:text="@string/zero"
             android:gravity="center"/>
 
         <Button

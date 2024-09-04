@@ -3,7 +3,6 @@ package com.example.trainingdiary.ui.exerciseList
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trainingdiary.R
-import com.example.trainingdiary.models.BodyPart
 import com.example.trainingdiary.models.ExerciseWithBodyParts
 
 class ExerciseAdapter(
     private val itemClickListener: (Int) -> Unit,
-    private val bodyParts: List<BodyPart>,
     private val context: Context
 ) : RecyclerView.Adapter<ExerciseAdapter.RecordViewHolder>() {
 

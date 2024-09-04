@@ -32,16 +32,13 @@ class ExerciseFragment : Fragment() {
         exerciseViewModel = ViewModelProvider(this)[ExerciseViewModel::class.java]
 
         CoroutineScope(Dispatchers.Main).launch {
-            val records = withContext(Dispatchers.IO) {
-                exerciseViewModel.getBodyTypes()
-            }
             val adapter = ExerciseAdapter({ exerciseId ->
                 val bundle = Bundle()
                 bundle.putInt("exerciseId", exerciseId)
                 bundle.putInt("positionId", arguments?.getInt("positionId")!!)
 
                 findNavController().navigate(R.id.action_exercises_to_home, bundle)
-            }, records, requireContext())
+            }, requireContext())
 
             binding.exercises.layoutManager = LinearLayoutManager(context)
             binding.exercises.adapter = adapter

@@ -38,7 +38,7 @@ class ExerciseStatisticManager {
             if (stat == null) {
                 stat = ExerciseStat(exerciseId)
             }
-            stat.addWeight(approachNumber, weight)
+            stat.addWeight(weight)
             saveExerciseStat(context, stat, approachNumber)
         }
 
