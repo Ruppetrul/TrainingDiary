@@ -22,4 +22,8 @@ class ExerciseHistoryRepository(private val exerciseHistoryDao: ExerciseDao) {
 
         return Pair(Date.from(zonedStartOfDay), Date.from(zonedEndOfDay))
     }
+
+    fun getHistoryDates(): List<Long> {
+        return exerciseHistoryDao.getExerciseHistoryDates()
+    }
 }

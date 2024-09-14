@@ -68,4 +68,7 @@ interface ExerciseDao {
 
     @Query("SELECT * FROM exercise WHERE title LIKE :name")
     fun getExercisesByName(name: String): List<ExerciseWithBodyParts>
+
+    @Query("SELECT DISTINCT datetime FROM exercise_history ORDER BY datetime")
+    fun getExerciseHistoryDates(): List<Long>
 }
