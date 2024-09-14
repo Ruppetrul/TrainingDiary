@@ -1,11 +1,13 @@
 package com.example.trainingdiary.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -26,21 +28,23 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
+    private var homeViewModel : HomeViewModel? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private lateinit var viewPager: ViewPager2
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this)[HomeViewModel::class.java]
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        homeViewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
         val navOptions = NavOptions.Builder()
             .setPopUpTo(R.id.navigation_home, false)
             .build()
@@ -48,8 +52,9 @@ class HomeFragment : Fragment() {
         val exerciseId = arguments?.getInt("exerciseId") ?: 0
         var position = arguments?.getInt("positionId") ?: 0
 
-        val viewPager: ViewPager2 = binding.viewPager
+        viewPager = binding.viewPager
         val adapter = MyFragmentStateAdapter(requireActivity())
+        homeViewModel!!.adapter = adapter
         viewPager.adapter = adapter
 
         val todayPosition = adapter.getPositionForDate(LocalDate.now())
@@ -160,5 +165,20 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        homeViewModel!!.position.observe(viewLifecycleOwner, Observer { new_position ->
+            viewPager.setCurrentItem(new_position, false)
+
+            //handleFloatButtonAndTitle(position2, position2, navOptions, viewPager)
+        })
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("TAG", "Home onViewCreated: ")
+        super.onViewCreated(view, savedInstanceState)
     }
 }

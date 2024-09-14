@@ -1,6 +1,7 @@
 package com.example.trainingdiary.ui.home.CalendarSheet
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -27,6 +28,12 @@ class CalendarSheetFragment : BottomSheetDialogFragment() {
 
     var viewModel : CalendarSheetViewModel? = null
 
+    private var listener: CalendarSheetListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = context as? CalendarSheetListener
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,10 +72,7 @@ class CalendarSheetFragment : BottomSheetDialogFragment() {
         calendarView.addDecorators(CurrentDayDecorator(getActivity() as MainActivity, CalendarDay.today()))
 
         calendarView.setOnDateChangedListener { widget, date, selected ->
-            Log.d("TAG", "date: " + date)
-            Log.d("TAG", "selected: " + selected)
-
-            dismissAllowingStateLoss()
+            onDateSelected(date)
         }
     }
 
@@ -93,5 +97,10 @@ class CalendarSheetFragment : BottomSheetDialogFragment() {
         override fun decorate(view: DayViewFacade) {
             view.setSelectionDrawable(drawable!!)
         }
+    }
+
+    private fun onDateSelected(date: CalendarDay) {
+        listener!!.onDateSelected(date)
+        dismissAllowingStateLoss()
     }
 }

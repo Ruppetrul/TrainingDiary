@@ -3,16 +3,23 @@ package com.example.trainingdiary.ui.home
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.trainingdiary.AppDatabase
 import com.example.trainingdiary.ExerciseHistoryRepository
 import com.example.trainingdiary.models.ExerciseHistoryWithExercise
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import java.time.LocalDate
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val exerciseHistoryRepository: ExerciseHistoryRepository
 
-    init {
+    private val _position = MutableLiveData<Int>()
+    val position: LiveData<Int> get() = _position
 
+    lateinit var adapter : MyFragmentStateAdapter
+
+    init {
         val database = AppDatabase.getDatabase(application)
         val exerciseHistoryDao = database.exerciseDao()
 
@@ -21,5 +28,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getByTimestamp(timestamp: Int): LiveData<List<ExerciseHistoryWithExercise>> {
         return exerciseHistoryRepository.getHistoryForPosition(timestamp)
+    }
+
+    fun setPosition(date: CalendarDay) {
+        //Because the months are counting down from 0.
+        _position.value = adapter.getPositionForDate(LocalDate.of(date.year, date.month + 1, date.day))
     }
 }
