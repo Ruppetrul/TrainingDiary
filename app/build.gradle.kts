@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.materialCalendarView)
     implementation(libs.jetbrains.kotlinx.serialization.core)
     implementation(libs.jetbrains.kotlinx.serialization.cbor)
     implementation(libs.flexbox)
