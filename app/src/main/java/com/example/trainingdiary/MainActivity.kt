@@ -69,6 +69,10 @@ class MainActivity : AppCompatActivity(), CalendarSheetListener {
                 openDatePickerBottomSheet()
                 true
             }
+            R.id.action_start -> {
+                NotificationHelper.createNotification(this)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

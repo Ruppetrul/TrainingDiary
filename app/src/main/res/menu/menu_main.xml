@@ -4,8 +4,12 @@
     tools:context="com.example.toolbarexample.MainActivity">
     <item
         android:id="@+id/action_calendar"
-        android:orderInCategory="100"
         android:icon="@drawable/baseline_calendar_month_24"
         android:title="Calendar"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_start"
+        android:icon="@drawable/baseline_play_circle_24"
+        android:title="Play"
         app:showAsAction="always"/>
 </menu>
