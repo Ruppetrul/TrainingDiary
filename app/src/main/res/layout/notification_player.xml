@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="left"
+>
+
+        <TextView
+            android:id="@+id/player_exercise_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="left"
+            >
+            <Button
+                android:id="@+id/player_weight_minus"
+                android:layout_width="20pt"
+                android:layout_height="wrap_content"
+                android:text="-"/>
+            <TextView
+                android:id="@+id/player_weight"
+                android:layout_width="wrap_content"
+                android:minWidth="30pt"
+                android:layout_height="wrap_content"
+                android:text="10"
+                android:paddingHorizontal="5pt"
+                android:textAlignment="center"
+                />
+            <Button
+                android:id="@+id/player_weight_plus"
+                android:layout_width="20pt"
+                android:layout_height="wrap_content"
+                android:text="+"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="left"
+            >
+            <Button
+                android:id="@+id/player_repeat_minus"
+                android:layout_width="20pt"
+                android:layout_height="wrap_content"
+                android:text="-"/>
+            <TextView
+                android:id="@+id/player_repeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="30pt"
+                android:text="10"
+                android:textAlignment="center"
+                android:paddingHorizontal="5pt"/>
+            <Button
+                android:id="@+id/player_repeat_plus"
+                android:layout_width="20pt"
+                android:layout_height="wrap_content"
+                android:text="+"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="left"
+            >
+            <Button
+                android:id="@+id/player_save_approach"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Сохранить"/>
+
+        </LinearLayout>
+
+</LinearLayout>
