@@ -1,5 +1,6 @@
 package com.example.trainingdiary
 
+import Migration2To3
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
@@ -19,7 +20,7 @@ import java.util.Date
     Approach::class,
     BodyPart::class,
     BodyPartExerciseRelation::class,
-], version = 2)
+], version = 3)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao
@@ -36,6 +37,7 @@ abstract class AppDatabase : RoomDatabase() {
                     "GENERAL_DB"
                 )
                 .addMigrations(Migration1To2.MIGRATION_1_2)
+                .addMigrations(Migration2To3.MIGRATION_2_3)
                 .build()
                 INSTANCE = instance
                 instance

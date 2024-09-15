@@ -54,11 +54,17 @@ interface ExerciseDao {
     @Query("SELECT * FROM exercise_history WHERE datetime >= :startOfDay AND datetime < :endOfDay")
     fun getExerciseHistoryByDate(startOfDay: Date, endOfDay: Date): LiveData<List<ExerciseHistoryWithExercise>>
 
+    @Query("SELECT * FROM exercise_history WHERE datetime >= :startOfDay AND datetime < :endOfDay")
+    fun getExerciseHistoryByDate2(startOfDay: Date, endOfDay: Date): List<ExerciseHistoryWithExercise>
+
     @Insert
     fun insertApproach(approach: Approach)
 
     @Update
     fun updateApproach(approach: Approach)
+
+    @Query("SELECT * FROM Approach WHERE id = :id")
+    fun selectApproach(id: Int) : Approach
 
     @Query("DELETE FROM Approach WHERE id = :id")
     fun deleteApproachById(id: Int)
@@ -71,4 +77,7 @@ interface ExerciseDao {
 
     @Query("SELECT DISTINCT datetime FROM exercise_history ORDER BY datetime")
     fun getExerciseHistoryDates(): List<Long>
+
+    @Query("UPDATE approach SET confirmed = 1 WHERE id = :approachId")
+    fun confirmApproach(approachId: Int)
 }

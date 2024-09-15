@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 data class Approach (
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "exerciseHistoryId") val exerciseHistoryId: Int,
-    @ColumnInfo(name = "repeatCount") val repeatCount: Int,
-    @ColumnInfo(name = "weight") val weight: Float,
+    @ColumnInfo(name = "repeatCount") var repeatCount: Int,
+    @ColumnInfo(name = "weight") var weight: Float,
+    @ColumnInfo(name = "confirmed") var confirmed: Boolean = false
 )

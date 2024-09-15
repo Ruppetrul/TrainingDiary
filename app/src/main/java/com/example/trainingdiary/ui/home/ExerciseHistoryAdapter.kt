@@ -9,16 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trainingdiary.R
+import com.example.trainingdiary.models.Approach
 import com.example.trainingdiary.models.ExerciseHistoryWithExercise
 import com.google.android.flexbox.FlexboxLayout
 
 class ExerciseHistoryAdapter(
     private val exerciseDeleteListener: (Int) -> Unit,
-    private val approachAddListener: (Int, Int?, Float?, Int?, Int, Int) -> Unit,
+    private val approachAddListener: (Int, Int?, Float?, Int?, Int, Int, Approach?) -> Unit,
     private val context: Context
 )
     : ListAdapter<ExerciseHistoryWithExercise,
@@ -43,7 +45,7 @@ class ExerciseHistoryAdapter(
         }
 
         holder.itemView.setOnClickListener { // new approach
-            approachAddListener(currentItem.exerciseHistory.id, null, null, null, currentItem.approaches.size + 1, currentItem.exercise.id)
+            approachAddListener(currentItem.exerciseHistory.id, null, null, null, currentItem.approaches.size + 1, currentItem.exercise.id, null)
         }
 
         handleApproach(holder, currentItem)
@@ -73,6 +75,8 @@ class ExerciseHistoryAdapter(
                     false
                 )
 
+                approachView.findViewById<ImageView>(R.id.confirmed).isVisible = approach.confirmed
+
                 approachView.findViewById<TextView>(R.id.weight).text =
                     approach.weight.toString() + " " + holder.itemView.context.getString(R.string.kilogram)
                 approachView.findViewById<TextView>(R.id.repeat).text =
@@ -85,7 +89,8 @@ class ExerciseHistoryAdapter(
                         approach.weight,
                         approach.repeatCount,
                         index + 1,
-                        currentItem.exercise.id
+                        currentItem.exercise.id,
+                        approach
                     )
                 }
 

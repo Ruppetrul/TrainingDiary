@@ -1,13 +1,18 @@
 package com.example.trainingdiary
 
 import NotificationHelper
+import NotificationHelper.createPlayer
+import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -17,9 +22,14 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.trainingdiary.databinding.ActivityMainBinding
 import com.example.trainingdiary.ui.home.CalendarSheet.CalendarSheetFragment
 import com.example.trainingdiary.ui.home.CalendarSheet.CalendarSheetListener
+import com.example.trainingdiary.ui.home.HistoryHelper
 import com.example.trainingdiary.ui.home.HomeViewModel
 import com.google.android.material.navigation.NavigationView
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
 
 class MainActivity : AppCompatActivity(), CalendarSheetListener {
 
@@ -73,21 +83,19 @@ class MainActivity : AppCompatActivity(), CalendarSheetListener {
                 true
             }
             R.id.action_start -> {
-                //TODO show dialog
+                showConfirmationDialog(this, "Запустить тренировочный плеер?",
+                    "В уведомлениях повится панель управления подходами." +
+                            " Вы сможете записывать прогресс не отвлекаясь от ютубчика :)" +
+                            "\n \n" +
+                            "Просто составте себе план тренировки и запустите плеер.",
+                    "Запустить",
+                    "Отмена", {
 
-                val dayOfEpoch = viewModel.getDayOfEpoch()
-                Log.d("TAG", "dayOfEpoch: $dayOfEpoch")
-
-                viewModel.getByPosition(dayOfEpoch.toInt()).observe(this, Observer {
-                    val first = it.first()
-                    NotificationHelper.createNotification(
-                        baseContext,
-                        first.exercise.title,
-                        1,
-                        first.approaches.first().weight,
-                        first.approaches.first().repeatCount
-                    )
+                    createPlayer(this)
+                }, {
+                    //Nothing
                 })
+
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -96,5 +104,32 @@ class MainActivity : AppCompatActivity(), CalendarSheetListener {
 
     override fun onDateSelected(date: CalendarDay) {
         viewModel.setPosition(date)
+    }
+
+    fun showConfirmationDialog(
+        context: Context,
+        title: String,
+        message: String,
+        positiveButtonText: String,
+        negativeButtonText: String,
+        positiveButtonAction: () -> Unit,
+        negativeButtonAction: () -> Unit
+    ) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle(title)
+        builder.setMessage(message)
+
+        builder.setPositiveButton(positiveButtonText) { dialog, _ ->
+            positiveButtonAction()
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton(negativeButtonText) { dialog, _ ->
+            negativeButtonAction()
+            dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 }

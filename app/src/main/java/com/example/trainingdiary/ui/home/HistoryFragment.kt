@@ -69,8 +69,8 @@ class HistoryFragment : Fragment() {
             exerciseDeleteListener = { exerciseId ->
                 showDeleteConfirmationDialog(requireContext(), exerciseId)
             },
-            approachAddListener = { exerciseHistoryId, approachId, weight, repeat, approachNumber, exerciseId ->
-                showDialog(requireContext(), exerciseHistoryId, approachId, weight, repeat, approachNumber, exerciseId)
+            approachAddListener = { exerciseHistoryId, approachId, weight, repeat, approachNumber, exerciseId, approach ->
+                showDialog(requireContext(), exerciseHistoryId, approachId, weight, repeat, approachNumber, exerciseId, approach)
             },
             requireContext()
         )
@@ -94,9 +94,10 @@ class HistoryFragment : Fragment() {
         return root
     }
 
-    private fun showDialog(context: Context, exerciseHistoryId: Int, approachId: Int? = null, weight: Float? = null, repeat: Int? = null, approachNumber: Int, exerciseId: Int) {
+    private fun showDialog(context: Context, exerciseHistoryId: Int, approachId: Int? = null, weight: Float? = null, repeat: Int? = null, approachNumber: Int, exerciseId: Int, approach: Approach?) {
         val inflater = LayoutInflater.from(context)
-        val dialogView = inflater.inflate(R.layout.add_aproach, null)
+        val dialogView = inflater.inflate(R.layout.add_or_edit_aproach, null)
+
         val weightSuggest = dialogView.findViewById<LinearLayout>(R.id.weightSuggest)
 
         val weightView = dialogView.findViewById<EditText>(R.id.weight)
@@ -172,6 +173,29 @@ class HistoryFragment : Fragment() {
         setButtonClickListener(incrementButton1, weightView, true, true)
         setButtonClickListener(decrementButton2, repeatView, false, false)
         setButtonClickListener(incrementButton2, repeatView, true, false)
+
+        val confirmButton = dialogView.findViewById<Button>(R.id.confirm_button)
+
+        confirmButton.setOnClickListener {
+            val inputWeight = weightView.text.toString().toFloat()
+
+            saveForStatistic(exerciseId, approachNumber, inputWeight)
+
+            onSave(
+                exerciseHistoryId,
+                inputWeight,
+                repeatView.text.toString().toIntOrNull() ?: 0,
+                approachId,
+                true
+            )
+            dialog.dismiss()
+        }
+
+        confirmButton.text = if (approach?.confirmed == true) {
+            "Не выполнено"
+        } else {
+            "Выполнено"
+        }
     }
 
     private fun saveForStatistic(exerciseId: Int, approachNumber: Int, value: Float) {
@@ -208,20 +232,25 @@ class HistoryFragment : Fragment() {
         }
     }
 
-    private fun onSave(exerciseId: Int, weight: Float, repeat: Int, approachId: Int? = null) {
+    private fun onSave(exerciseId: Int, weight: Float, repeat: Int, approachId: Int? = null, confirmRevert: Boolean = false) {
         val database = AppDatabase.getDatabase(requireContext())
 
         CoroutineScope(Dispatchers.IO).launch {
-            val approach = Approach(
-                id = approachId ?: 0,
-                exerciseHistoryId = exerciseId,
-                repeatCount = repeat,
-                weight = weight
-            )
-
-            if (approachId != null && approachId != 0) {
+            val approach: Approach
+            if (approachId != null) {
+                approach = database.exerciseDao().selectApproach(approachId)
+                approach.repeatCount = repeat
+                approach.weight = weight
+                if (confirmRevert) {
+                    approach.confirmed = !approach.confirmed
+                }
                 database.exerciseDao().updateApproach(approach)
             } else {
+                approach = Approach(
+                    exerciseHistoryId = exerciseId,
+                    repeatCount = repeat,
+                    weight = weight
+                )
                 database.exerciseDao().insertApproach(approach)
             }
         }
