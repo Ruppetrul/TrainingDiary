@@ -80,7 +80,7 @@ class HistoryFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-        homeViewModel.getByTimestamp(timestamp).observe(viewLifecycleOwner) { exerciseHistory ->
+        homeViewModel.getByPosition(timestamp).observe(viewLifecycleOwner) { exerciseHistory ->
             if (exerciseHistory.isEmpty()) {
                 binding.exercisesHistory.visibility = View.GONE
                 binding.emptyDay.visibility = View.VISIBLE

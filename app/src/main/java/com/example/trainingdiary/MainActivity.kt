@@ -1,10 +1,13 @@
 package com.example.trainingdiary
 
+import NotificationHelper
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -71,8 +74,20 @@ class MainActivity : AppCompatActivity(), CalendarSheetListener {
             }
             R.id.action_start -> {
                 //TODO show dialog
-                //TODO find first approach
-                NotificationHelper.createNotification(this, "Жим лёжа", 2, 50f, 9)
+
+                val dayOfEpoch = viewModel.getDayOfEpoch()
+                Log.d("TAG", "dayOfEpoch: $dayOfEpoch")
+
+                viewModel.getByPosition(dayOfEpoch.toInt()).observe(this, Observer {
+                    val first = it.first()
+                    NotificationHelper.createNotification(
+                        baseContext,
+                        first.exercise.title,
+                        1,
+                        first.approaches.first().weight,
+                        first.approaches.first().repeatCount
+                    )
+                })
                 true
             }
             else -> super.onOptionsItemSelected(item)
