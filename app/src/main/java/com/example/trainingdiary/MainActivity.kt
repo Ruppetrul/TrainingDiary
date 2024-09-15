@@ -70,7 +70,9 @@ class MainActivity : AppCompatActivity(), CalendarSheetListener {
                 true
             }
             R.id.action_start -> {
-                NotificationHelper.createNotification(this)
+                //TODO show dialog
+                //TODO find first approach
+                NotificationHelper.createNotification(this, "Жим лёжа", 2, 50f, 9)
                 true
             }
             else -> super.onOptionsItemSelected(item)
